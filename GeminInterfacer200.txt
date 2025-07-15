@@ -1,0 +1,87 @@
+Gemini Interfacer Documentation
+1. Basic Concept: What is Gemini Interfacer?
+The Gemini Interfacer is a web-based application designed to provide a streamlined and interactive interface for Google's Gemini Large Language Models (LLMs). It allows users to send natural language queries (prompts) to the Gemini API and receive responses directly within the application.
+
+You can access the application here: Gemini Interfacer (Non-Hardcoded).
+
+Key functionalities include:
+
+Direct Querying: Send text prompts to various Gemini models.
+Response Formatting: Request specific output formats (HTML, PowerShell, CMD, JSON, CSS, JavaScript, Python, Bash) to receive structured code or text.
+Interaction Management: Copy, save, or append responses to new queries.
+Documentation Builder: Automatically or manually compile AI responses into a structured HTML document.
+Configurability: Easily switch between different Gemini models and manage API keys.
+Debugging Tools: An in-app console to monitor application activity and API interactions.
+The application aims to enhance the user experience when working with Gemini by providing a clean, cyberpunk-themed graphical user interface (GUI) and practical tools for managing AI-generated content.
+
+2. Setting Up Your Gemini API Key
+To use the Gemini Interfacer, you need a valid Google Gemini API Key. This application is designed to be flexible, allowing you to either enter your API key via the user interface or, for specific deployments, hardcode it directly into the JavaScript.
+
+2.1. Recommended Method: Via the Options Panel (Non-Hardcoded Version)
+This is the primary and recommended method for the "Non-Hardcoded Gemini Interfacer" version.
+
+Obtain Your API Key: If you don't have one, go to the Google AI Studio and generate a new API key.
+Open the Options Panel: In the Gemini Interfacer application, click the "Options" button in the top right header.
+Navigate to Settings: Ensure the "Settings" tab is active within the Options panel.
+Enter Your API Key: Locate the "Gemini API Key:" input field and paste your API key there.
+Save Your Key: Click the "Save API Key" button. The status message below the input will confirm if the key was loaded successfully. The "Send Query" button will become enabled once a valid key is recognized.
+Your API key is stored temporarily in the browser's memory for the duration of your session and is not persisted across browser restarts unless you save your configuration.
+
+2.2. Alternative Method: Hardcoding (For Developers/Specific Deployments)
+For the "Hardcoded Gemini Interfacer" version, or if you prefer to embed the key directly in the HTML file for a specific deployment, you can do so in the JavaScript section.
+
+Open the HTML File: Open the .html file of the Gemini Interfacer in a text editor.
+Locate the API Key Variable: Scroll down to the <script> section near the end of the file. You will find a line similar to this:
+let API_KEY = "AIzaSyDlkX8Pzc08r3mijduIPj07KKBmzo5921o"; // Hardcoded example key
+Replace the Placeholder: Replace "AIzaSyDlkX8Pzc08r3mijduIPj07KKBmzo5921o" with your actual Gemini API Key.
+let API_KEY = "YOUR_ACTUAL_GEMINI_API_KEY_HERE";
+Save the File: Save the HTML file. The application will now use this hardcoded key automatically upon loading.
+Warning: Hardcoding API keys directly into client-side code is generally discouraged for production environments due to security risks. This method is provided for local testing or specific controlled deployments only.
+
+3. Full Feature Breakdown
+The Gemini Interfacer provides a suite of features to enhance your interaction with the Gemini AI.
+
+3.1. Main Interface Elements
+Prompt Input Area: A large text area where you type your queries for the Gemini AI.
+Gemini Response Area: Displays the AI's response to your queries. It's designed to preserve formatting and allow scrolling for longer outputs.
+Gemini Model Selection: A dropdown menu that allows you to choose which Gemini model (e.g., Gemini 2.0 Flash, Gemini 1.5 Pro) you want to use for your queries.
+Loading Indicator: A subtle message that appears below the model selection dropdown when a query is being processed.
+3.2. Action Buttons
+Input Action Buttons (Below Prompt Input)
+Send Query: Sends the content of the prompt input area to the selected Gemini AI model. This button is disabled if no API key is loaded.
+Top: Scrolls the prompt input area to the very top, useful for long prompts.
+Append Last Response: Appends the content of the "Gemini Response" area to the current prompt input. Useful for continuing conversations or refining previous outputs. (Disabled until a response is received).
+Response Action Buttons (Below Response Area)
+Copy Response: Copies the content of the "Gemini Response" area to your clipboard. (Disabled until a response is received).
+Save Response: Downloads the content of the "Gemini Response" area as a text file (or a specific file type if output formatting is enabled). (Disabled until a response is received).
+Document Response: Appends the content of the "Gemini Response" area to the "Doc Builder" panel. (Disabled until a response is received).
+3.3. Header Panel Buttons
+Options: Opens the full-page "Options Panel" for configuring API keys, query settings, and formatting preferences.
+Debug: Opens the full-page "Debug Panel" which includes a client-side console for monitoring application logs and errors.
+Doc Builder: Opens the full-page "Doc Builder Panel" where you can compile and export AI responses into a structured HTML document.
+3.4. Options Panel Features
+Accessible via the "Options" button in the header.
+
+Settings Tab:
+API Configuration: Input field and save button for your Gemini API Key. Includes a status indicator.
+Configuration Management: Buttons to save the current application settings (including API key, model choice, formatting preferences) to a JSON file, and an input to load settings from a previously saved JSON file.
+General Tab: (Placeholder for future general application settings).
+Query Settings Tab:
+Text File Prepend: A checkbox and file input to select a text file whose content will be prepended to your query before sending it to Gemini.
+Prepend Message: A checkbox and text area to enter a custom message that will be prepended to your query.
+Format Settings Tab:
+Enable Output Formatting: A checkbox to toggle whether the application attempts to parse and clean the Gemini response based on a specific format.
+Output Format Radios: A selection of radio buttons (HTML, Powershell, CMD, JSON, CSS, JavaScript, Python, Bash) to instruct Gemini to provide output in a specific code or text format. This also influences the file extension when saving responses.
+Display Options (Response Font Size): An input to adjust the font size of the text displayed in the "Gemini Response" area.
+3.5. Debug Panel Features
+Accessible via the "Debug" button in the header.
+
+Client-Side Console: A read-only text area that displays internal application logs, API call statuses, and error messages. Useful for troubleshooting.
+Clear Console: A button to clear all messages from the client-side console.
+3.6. Doc Builder Panel Features
+Accessible via the "Doc Builder" button in the header.
+
+Document Content Area: A large text area that serves as a live editor for your documentation. Responses from Gemini can be appended here.
+Documenting Mode (Auto-Append): A checkbox that, when enabled, automatically appends every new Gemini response to the document content area.
+Export to HTML: A button that downloads the current content of the document content area as a fully formatted HTML file, including basic styling.
+copyright elton boehnen 2025 (boehnenelton2025@gmail.com) | Github | Gemini Interfacer (NHC)

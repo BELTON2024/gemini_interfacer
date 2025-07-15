@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini Interfacer NHC Version 2.0.0</title>
+
+    <!-- SEO and Meta Tags -->
+    <meta name="description" content="Gemini Interfacer: A powerful web application for interacting with Google's Gemini AI models. Send queries, format responses, and document your AI interactions.">
+    <meta name="keywords" content="Gemini, AI, chatbot, Google AI, large language model, LLM, prompt engineering, web app, documentation, code generator">
+    <meta name="author" content="Elton Boehnen">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook / LinkedIn -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="YOUR_APP_URL_HERE"> <!-- Replace with your actual app URL -->
+    <meta property="og:title" content="Gemini Interfacer NHC Version 2.0.0">
+    <meta property="og:description" content="A powerful web application for interacting with Google's Gemini AI models. Send queries, format responses, and document your AI interactions.">
+    <meta property="og:image" content="https://placehold.co/1200x630/000000/00FF00?text=Gemini+Interfacer"> <!-- Placeholder image -->
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="YOUR_APP_URL_HERE"> <!-- Replace with your actual app URL -->
+    <meta property="twitter:title" content="Gemini Interfacer NHC Version 2.0.0">
+    <meta property="twitter:description" content="A powerful web application for interacting with Google's Gemini AI models. Send queries, format responses, and document your AI interactions.">
+    <meta property="twitter:image" content="https://placehold.co/1200x675/000000/00FF00?text=Gemini+Interfacer"> <!-- Placeholder image -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Orbitron for headers, Electrolize for general techy text -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Electrolize&display=swap" rel="stylesheet">
+    <style>
+        /* Universal Box Sizing for consistent layout */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        /*
+        Color Palette Notes for Gemini Interfacer:
+        - Blue Page Background: #4169E1 (Royal Blue)
+        - Black Background for Sections/Mostly Everything: #000000
+        - Black as a DIV or Content Area: #000000
+        - White is Site Wide Headers: #FFFFFF
+        - Neon Pink is for Page and Section Headers: #FF00FF
+        - Green is General Site Font Headers: #00FF00
+        */
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #4169E1; /* Blue Page Background */
+            color: #00FF00; /* Green General Site Font Headers */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden; /* Prevent horizontal scrollbars */
+        }
+        .main-header {
+            width: 100%;
+            background-color: #000000; /* Black Background for Sections */
+            border-bottom: 1px solid #FF00FF; /* Neon Pink border */
+            box-shadow: 0 2px 15px rgba(255, 0, 255, 0.3); /* Neon Pink glow shadow */
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed; /* Keep header fixed at the top */
+            top: 0;
+            left: 0;
+            z-index: 1000; /* Ensure header is on top */
+            height: 60px; /* Explicit height for the header */
+        }
+        .header-buttons {
+            display: flex;
+            gap: 1rem; /* Space between buttons */
+        }
+        .header-text {
+            font-family: 'Orbitron', monospace; /* Futuristic/Cyberpunk font */
+            color: #FFFFFF; /* White Site Wide Headers */
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.7); /* White glow effect */
+            font-size: 1.8rem;
+        }
+        /* Specific style for the button inside the header to remove conflicting margin */
+        .main-header .cyber-button {
+            margin-top: 0; /* Override the general margin-top */
+            background-color: #FF00FF; /* Neon Pink button */
+            color: #000000; /* Black text on button */
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease; /* Ensure transition is present */
+        }
+        /* Keyframes for the electro pulse effect on buttons */
+        @keyframes electro-button-pulse {
+            0% {
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 0px rgba(255, 255, 255, 0);
+                border-color: transparent; /* No border initially */
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 5px rgba(255, 255, 255, 0.5);
+                border-color: #FFFFFF; /* White border during pulse */
+            }
+            100% {
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 0px rgba(255, 255, 255, 0);
+                border-color: transparent;
+            }
+        }
+        .cyber-button:hover {
+            background-color: #00FF00; /* Green on hover */
+            color: #000000;
+            animation: electro-button-pulse 0.4s infinite alternate; /* Apply faster electro pulse animation */
+            transform: translateY(-2px);
+        }
+
+        #main-content { /* Ensure the main content div takes full width */
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            background-color: #000000; /* Black as a DIV or Content Area */
+            border: 1px solid #FF00FF; /* Neon Pink border */
+            box-shadow: 0 0 25px rgba(255, 0, 255, 0.4); /* Neon Pink glow shadow */
+            padding: 2.5rem;
+            border-radius: 0.75rem; /* Slightly rounded corners */
+            text-align: center;
+            max-width: 90%;
+            width: 900px; /* Max width for larger screens */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Adjusted margin-top to account for header height */
+            margin-top: 60px; /* Match header height for initial spacing */
+            padding-top: 2.5rem; /* Original padding */
+            padding-bottom: 2rem; /* Original padding */
+            margin-bottom: 2rem; /* Space at the bottom */
+        }
+        /* Further adjust container padding to compensate for fixed header if needed */
+        @media (min-width: 769px) { /* Apply on larger screens where header is fixed */
+            .container {
+                margin-top: 80px; /* Increased margin-top for more clearance */
+            }
+        }
+
+        .form-group {
+            width: 100%;
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #00FF00; /* Green General Site Font Headers */
+            font-weight: 600;
+            font-family: 'Electrolize', sans-serif; /* Techy font for labels */
+        }
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #000000; /* Black Background for Sections */
+            border: 1px solid #00FF00; /* Green border */
+            border-radius: 0.25rem;
+            color: #FFFFFF; /* White text for input */
+            font-family: 'Electrolize', sans-serif; /* Techy font for input/textarea */
+            resize: vertical;
+        }
+        textarea:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: #FF00FF; /* Neon Pink on focus */
+            box-shadow: 0 0 8px rgba(255, 0, 255, 0.5);
+        }
+        /* cyber-button styles are defined above for general and header buttons */
+        #response-area {
+            background-color: #000000; /* Black as a DIV or Content Area */
+            border: 1px solid #00FF00; /* Green border */
+            border-radius: 0.25rem;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            text-align: left;
+            white-space: pre-wrap; /* Preserve whitespace and wrap text */
+            word-wrap: break-word; /* Break long words */
+            min-height: 150px;
+            max-height: 400px; /* Limit height and allow scrolling */
+            overflow-y: auto;
+            color: #FFFFFF; /* White text for response */
+            font-family: 'Electrolize', sans-serif; /* Techy font for response area */
+        }
+        .loading-indicator {
+            margin-top: 1rem;
+            color: #00FF00; /* Green */
+            font-family: 'Electrolize', sans-serif; /* Techy font for loading */
+        }
+        .action-buttons-container {
+            margin-top: 1.5rem;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+        .input-action-buttons { /* New style for buttons near input */
+            display: flex;
+            justify-content: center; /* Center them below the input */
+            gap: 1rem;
+            width: 100%;
+            margin-top: 1rem; /* Space from input */
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        }
+
+
+        /* Overlay Panel Styles */
+        .options-panel-overlay, .debug-panel-overlay, .doc-builder-panel-overlay { /* Apply common styles to all overlays */
+            position: fixed;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            transition: top 0.5s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .options-panel-overlay.active, .debug-panel-overlay.active, .doc-builder-panel-overlay.active {
+            top: 0;
+        }
+        .options-panel-content, .debug-panel-content, .doc-builder-panel-content { /* Apply common styles to all panel contents */
+            background-color: #000000;
+            border: 1px solid #FF00FF;
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.6);
+            padding: 2rem;
+            border-radius: 0.75rem;
+            max-width: 800px;
+            width: 90%;
+            height: auto;
+            max-height: 95vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+        }
+        .options-panel-body, .debug-panel-body, .doc-builder-panel-body { /* Apply common styles to all panel bodies */
+            flex-grow: 1;
+            text-align: center;
+            padding-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            min-height: 100px;
+        }
+        .options-panel-footer, .debug-panel-footer, .doc-builder-panel-footer { /* Apply common styles to all panel footers */
+            width: 100%;
+            border-top: 1px solid rgba(255, 0, 255, 0.3);
+            padding-top: 1rem;
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .close-panel-button { /* Common close button style */
+            background-color: #FF00FF;
+            color: #000000;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.25rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+        }
+        .close-panel-button:hover {
+            background-color: #00FF00;
+            color: #000000;
+            animation: electro-button-pulse 0.4s infinite alternate;
+            transform: translateY(-2px);
+        }
+
+        /* Adjustments for smaller screens to ensure panel content fits */
+        @media (max-width: 768px) {
+            .options-panel-content, .debug-panel-content, .doc-builder-panel-content {
+                padding: 1rem;
+                width: 95%;
+            }
+            .options-panel-body, .debug-panel-body, .doc-builder-panel-body {
+                padding-bottom: 1rem;
+            }
+            .options-panel-footer, .debug-panel-footer, .doc-builder-panel-footer {
+                padding-top: 0.75rem;
+                margin-top: 1rem;
+            }
+            .input-action-buttons button {
+                flex-grow: 1; /* Make buttons expand to fill space */
+            }
+        }
+
+        /* Loading Overlay Styles */
+        #loading-overlay {
+            background-color: #000000;
+            transition: opacity 0.5s ease-out;
+        }
+        .loader {
+            border-top-color: #FF00FF;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        #loading-message-text {
+            font-family: 'Electrolize', sans-serif;
+            color: #00FF00;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+        }
+
+        /* API Key Input styles */
+        .api-key-input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            flex: 1;
+            min-width: 250px;
+            padding-right: 10px;
+        }
+        .api-key-input-group label {
+            color: #00FF00;
+            font-family: 'Electrolize', sans-serif;
+            margin-bottom: 0.5rem;
+        }
+        .api-key-input-group input[type="text"],
+        .api-key-input-group input[type="password"] {
+            background-color: #000000;
+            border: 1px solid #00FF00;
+            color: #FFFFFF;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            width: 100%;
+            margin-bottom: 0.5rem;
+            font-family: 'Electrolize', sans-serif;
+        }
+        .api-key-status {
+            font-family: 'Electrolize', sans-serif;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            color: #FF00FF;
+        }
+
+        /* Tab Styles (common for all panels) */
+        .tabs-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 0, 255, 0.3);
+        }
+        .tab-button {
+            background-color: transparent;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            color: #00FF00;
+            font-family: 'Electrolize', sans-serif;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease, border-bottom 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        .tab-button:hover {
+            color: #FFFFFF;
+        }
+        .tab-button.active {
+            color: #FF00FF;
+            border-bottom: 3px solid #FF00FF;
+        }
+        .tab-content {
+            flex-grow: 1;
+            width: 100%;
+            display: none;
+            padding-top: 1rem;
+            background-color: #000000;
+            border: 1px solid #00FF00;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+        .tab-content.active {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: flex-start;
+            gap: 20px;
+        }
+        /* Style for the individual sections within tab content */
+        .tab-section {
+            flex: 1;
+            min-width: 280px;
+            padding: 1rem;
+            border: 1px solid rgba(0, 255, 0, 0.2);
+            border-radius: 0.5rem;
+            background-color: rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .tab-section h3 {
+            color: #FF00FF;
+            font-family: 'Electrolize', sans-serif;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        /* Custom checkbox styling to match theme */
+        .cyber-checkbox {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #00FF00;
+            border-radius: 4px;
+            background-color: #000000;
+            cursor: pointer;
+            position: relative;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+        .cyber-checkbox:checked {
+            background-color: #FF00FF;
+            border-color: #FF00FF;
+        }
+        .cyber-checkbox:checked::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 6px;
+            width: 5px;
+            height: 10px;
+            border: solid #000000;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        /* Custom radio button styling */
+        .cyber-radio {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #00FF00;
+            border-radius: 50%;
+            background-color: #000000;
+            cursor: pointer;
+            position: relative;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+        .cyber-radio:checked {
+            background-color: #FF00FF;
+            border-color: #FF00FF;
+        }
+        .cyber-radio:checked::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #000000;
+            transform: translate(-50%, -50%);
+        }
+        .radio-group-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Console styles */
+        #console-output {
+            width: 100%;
+            height: 200px;
+            background-color: #000000;
+            border: 1px solid #00FF00;
+            color: #00FF00;
+            font-family: 'monospace', 'Courier New', Courier, monospace;
+            font-size: 0.85rem;
+            padding: 0.5rem;
+            overflow-y: auto;
+            resize: vertical;
+            margin-top: 1rem;
+            border-radius: 0.25rem;
+        }
+
+        /* Doc Builder Panel Specific Styles */
+        #doc-builder-textarea {
+            width: 100%;
+            height: 400px; /* Adjust height as needed */
+            background-color: #000000;
+            border: 1px solid #00FF00;
+            border-radius: 0.25rem;
+            color: #FFFFFF;
+            font-family: 'Electrolize', sans-serif;
+            padding: 1rem;
+            resize: vertical;
+            margin-bottom: 1rem;
+            text-align: left; /* Ensure text alignment is left */
+        }
+        #doc-builder-textarea h1, #doc-builder-textarea h2 {
+            color: #FF00FF; /* Neon Pink for headings in doc builder */
+            font-family: 'Orbitron', monospace;
+            text-shadow: 0 0 5px rgba(255, 0, 255, 0.5);
+            margin-top: 1em;
+            margin-bottom: 0.5em;
+        }
+        #doc-builder-textarea h1 {
+            font-size: 2em;
+        }
+        #doc-builder-textarea h2 {
+            font-size: 1.5em;
+        }
+        #doc-builder-textarea pre {
+            background-color: rgba(0, 0, 0, 0.7); /* Slightly darker background for code blocks */
+            border: 1px dashed rgba(0, 255, 0, 0.3);
+            padding: 0.75rem;
+            border-radius: 0.25rem;
+            overflow-x: auto; /* Allow horizontal scrolling for wide code */
+            white-space: pre-wrap; /* Ensure text wraps within pre */
+            word-wrap: break-word; /* Break long words within pre */
+            color: #00FF00; /* Green for code content */
+            font-family: 'monospace', 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+            margin-bottom: 1.5rem;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="fixed inset-0 flex flex-col items-center justify-center z-[3000]">
+        <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-24 w-24 mb-4"></div>
+        <p id="loading-message-text" class="text-xl text-green-400"></p>
+    </div>
+
+    <!-- Main Content (initially hidden) -->
+    <div id="main-content" class="hidden">
+        <!-- New Header -->
+        <header class="main-header">
+            <h1 class="header-text">Gemini Interfacer Version 2.0.0</h1>
+            <div class="header-buttons">
+                <button id="open-options-button" class="cyber-button">Options</button>
+                <button id="open-debug-button" class="cyber-button">Debug</button>
+                <button id="open-doc-builder-button" class="cyber-button">Doc Builder</button>
+            </div>
+        </header>
+
+        <div class="container rounded-lg">
+            <div class="form-group">
+                <label for="prompt-input">Enter your query for Gemini:</label>
+                <textarea id="prompt-input" rows="6" placeholder="Type your prompt here..."></textarea>
+            </div>
+
+            <!-- New: Buttons for input actions -->
+            <div class="input-action-buttons">
+                <button id="send-query-button" class="cyber-button">Send Query</button>
+                <button id="scroll-to-top-button" class="cyber-button">Top</button>
+                <button id="append-last-response-button" class="cyber-button" disabled>Append Last Response</button>
+            </div>
+
+
+            <div class="form-group mt-6">
+                <label for="response-area">Gemini Response:</label>
+                <div id="response-area"></div>
+            </div>
+
+            <div class="action-buttons-container">
+                <button id="copy-response-button" class="cyber-button" disabled>Copy Response</button>
+                <button id="save-response-button" class="cyber-button" disabled>Save Response</button>
+                <button id="document-response-button" class="cyber-button" disabled>Document Response</button>
+            </div>
+
+            <!-- New: Gemini Model Selection Combo Box -->
+            <div class="form-group mt-6 w-full text-left">
+                <label for="gemini-model-select">Select Gemini Model:</label>
+                <select id="gemini-model-select" class="w-full p-2 bg-black border border-green-500 rounded text-white font-mono">
+                    <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
+                    <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+                    <option value="gemini-2.5-flash-lite-preview-06-17">Gemini 2.5 Flash-Lite Preview</option>
+                    <option value="gemini-2.0-flash" selected>Gemini 2.0 Flash (Default)</option>
+                    <option value="gemini-2.0-flash-lite">Gemini 2.0 Flash-Lite</option>
+                    <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+                    <option value="gemini-1.5-flash-8b">Gemini 1.5 Flash-8B</option>
+                    <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+                </select>
+                <!-- Status indicator moved here -->
+                <div id="loading-message" class="loading-indicator hidden mt-2">Processing query...</div>
+            </div>
+        </div>
+
+        <!-- Full Page Overlay Options Panel -->
+        <div id="options-panel" class="options-panel-overlay">
+            <div class="options-panel-content">
+                <div class="options-panel-body">
+                    <div class="options-panel-header">
+                        <h2 class="text-3xl header-text" style="color: #FF00FF;">Options Panel</h2>
+                    </div>
+
+                    <!-- Tab Navigation for Options Panel -->
+                    <div class="tabs-container">
+                        <button class="tab-button active" data-tab-group="options" data-tab-id="settings">Settings</button>
+                        <button class="tab-button" data-tab-group="options" data-tab-id="general">General</button>
+                        <button class="tab-button" data-tab-group="options" data-tab-id="query-settings">Query Settings</button>
+                        <button class="tab-button" data-tab-group="options" data-tab-id="format-settings">Format Settings</button>
+                    </div>
+
+                    <!-- Tab Content - Settings -->
+                    <div id="tab-options-settings" class="tab-content active" data-tab-group="options">
+                        <div class="tab-section">
+                            <h3 class="text-xl">API Configuration</h3>
+                            <p class="text-lg description-text mb-4" style="color: #00FF00;">Configure your API settings here.</p>
+                            <label for="api-key-input">Gemini API Key:</label>
+                            <input type="text" id="api-key-input" placeholder="Enter API Key">
+                            <button id="save-api-key-button" class="cyber-button">Save API Key</button>
+                            <p id="api-key-status" class="api-key-status mt-2"></p>
+                        </div>
+                        <div class="tab-section">
+                            <h3 class="text-xl">Configuration Management</h3>
+                            <p class="text-sm text-green-400">Save or load your current application settings.</p>
+                            <button id="save-config-button" class="cyber-button mt-4">Save Configuration</button>
+                            <label for="load-config-input" class="mt-4 block">Load Configuration:</label>
+                            <input type="file" id="load-config-input" class="w-full p-2 bg-black border border-green-500 rounded text-white font-mono">
+                        </div>
+                    </div>
+
+                    <!-- Tab Content - General -->
+                    <div id="tab-options-general" class="tab-content" data-tab-group="options">
+                        <p class="text-lg description-text" style="color: #00FF00;">General options will go here.</p>
+                    </div>
+
+                    <!-- Tab Content - Query Settings -->
+                    <div id="tab-options-query-settings" class="tab-content" data-tab-group="options">
+                        <div class="tab-section">
+                            <h3 class="text-xl">Text File Prepend <input type="checkbox" id="prepend-file-checkbox" class="cyber-checkbox"></h3>
+                            <p class="text-sm text-green-400">Select a file to prepend to your query.</p>
+                            <label for="prepend-file-input" class="mt-4">Choose File:</label>
+                            <input type="file" id="prepend-file-input" class="w-full p-2 bg-black border border-green-500 rounded text-white font-mono">
+                        </div>
+                        <div class="tab-section">
+                            <h3 class="text-xl">Prepend Message <input type="checkbox" id="prepend-message-checkbox" class="cyber-checkbox"></h3>
+                            <p class="text-sm text-green-400">Enter a message to prepend to your query.</p>
+                            <label for="prepend-message-input" class="mt-4">Prepend Message:</label>
+                            <textarea id="prepend-message-input" rows="4" placeholder="Enter message here..." class="w-full"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Tab Content - Format Settings -->
+                    <div id="tab-options-format-settings" class="tab-content" data-tab-group="options">
+                        <div class="tab-section">
+                            <h3 class="text-xl">Enable Output Formatting <input type="checkbox" id="enable-formatting-checkbox" class="cyber-checkbox" checked></h3>
+                            <p class="text-sm text-green-400">Toggle to enable or disable specific output formatting.</p>
+                            <div class="mt-4">
+                                <div class="radio-group-item">
+                                    <input type="radio" id="format-html" name="output-format-radio" value="html" class="cyber-radio" checked>
+                                    <label for="format-html">HTML</label>
+                                </div>
+                                <div class="radio-group-item">
+                                    <input type="radio" id="format-powershell" name="output-format-radio" value="powershell" class="cyber-radio">
+                                    <label for="format-powershell">Powershell</label>
+                                </div>
+                                <div class="radio-group-item">
+                                    <input type="radio" id="format-cmd" name="output-format-radio" value="cmd" class="cyber-radio">
+                                    <label for="format-cmd">CMD</label>
+                                </div>
+                                <div class="radio-group-item">
+                                    <input type="radio" id="format-json" name="output-format-radio" value="json" class="cyber-radio">
+                                    <label for="format-json">JSON</label>
+                                </div>
+                                <div class="radio-group-item">
+                                    <input type="radio" id="format-css" name="output-format-radio" value="css" class="cyber-radio">
+                                    <label for="format-css">CSS</label>
+                                </div>
+                                <div class="radio-group-item">
+                                    <input type="radio" id="format-javascript" name="output-format-radio" value="javascript" class="cyber-radio">
+                                    <label for="format-javascript">JavaScript</label>
+                                </div>
+                                <div class="radio-group-item">
+                                    <input type="radio" id="format-python" name="output-format-radio" value="python" class="cyber-radio">
+                                    <label for="format-python">Python</label>
+                                </div>
+                                <div class="radio-group-item">
+                                    <input type="radio" id="format-bash" name="output-format-radio" value="bash" class="cyber-radio">
+                                    <label for="format-bash">Bash</label>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-400 mt-1">Choose the desired output format.</p>
+                        </div>
+                        <div class="tab-section">
+                            <h3 class="text-xl">Display Options</h3>
+                            <p class="text-sm text-green-400">Control how the response is displayed.</p>
+                            <label for="response-font-size" class="mt-4">Response Font Size:</label>
+                            <input type="number" id="response-font-size" value="16" step="1" min="10" max="30" class="w-full">
+                            <p class="text-xs text-gray-400 mt-1">Adjust the font size of the Gemini response.</p>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="options-panel-footer">
+                    <button id="close-options-button" class="close-panel-button">Retract Panel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Full Page Overlay Debug Panel -->
+        <div id="debug-panel" class="debug-panel-overlay">
+            <div class="debug-panel-content">
+                <div class="debug-panel-body">
+                    <div class="options-panel-header">
+                        <h2 class="text-3xl header-text" style="color: #00FF00;">Debug Panel</h2>
+                    </div>
+
+                    <!-- Tab Navigation for Debug Panel -->
+                    <div class="tabs-container">
+                        <button class="tab-button active" data-tab-group="debug" data-tab-id="console">Console</button>
+                        <!-- Add more debug tab buttons here as needed -->
+                    </div>
+
+                    <!-- Tab Content - Console -->
+                    <div id="tab-debug-console" class="tab-content active" data-tab-group="debug">
+                        <div class="tab-section">
+                            <h3 class="text-xl">Client-Side Console</h3>
+                            <textarea id="console-output" readonly></textarea>
+                            <button id="clear-console-button" class="cyber-button mt-2">Clear Console</button>
+                        </div>
+                    </div>
+
+                    <!-- Add more debug tab content divs here -->
+
+                </div>
+                <div class="debug-panel-footer">
+                    <button id="close-debug-button" class="close-panel-button">Retract Panel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Full Page Overlay Doc Builder Panel -->
+        <div id="doc-builder-panel" class="doc-builder-panel-overlay">
+            <div class="doc-builder-panel-content">
+                <div class="doc-builder-panel-body">
+                    <div class="options-panel-header">
+                        <h2 class="text-3xl header-text" style="color: #FF00FF;">Doc Builder</h2>
+                    </div>
+
+                    <div class="tab-section w-full">
+                        <h3 class="text-xl">Document Content</h3>
+                        <textarea id="doc-builder-textarea" class="w-full" rows="15"><h1>Untitled Document</h1></textarea>
+                        <div class="flex items-center mt-4">
+                            <input type="checkbox" id="documenting-mode-checkbox" class="cyber-checkbox mr-2">
+                            <label for="documenting-mode-checkbox" class="text-green-400 font-bold">Documenting Mode (Auto-Append)</label>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="doc-builder-panel-footer">
+                    <button id="export-doc-html-button" class="cyber-button">Export to HTML</button>
+                    <button id="close-doc-builder-button" class="close-panel-button">Retract Panel</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Page Footer -->
+    <footer class="page-footer text-center w-full py-4 mt-8 text-sm text-green-400">
+        copyright elton boehnen 2025 (boehnenelton2025@gmail.com) | <a href="https://github.com/BELTON2024/gemini_interfacer" target="_blank" class="text-pink-500 hover:text-white transition-colors">Github</a>
+    </footer>
+
+    <script>
+        // Initial API Key (hardcoded for now, will be updated if user enters one)
+        let API_KEY = ""; // This is the key difference: empty string for non-hardcoded
+        // API_URL will be constructed dynamically when needed to ensure latest API_KEY is used
+
+        // Global variable for selected Gemini model, initialized to default
+        let currentGeminiModel = "gemini-2.0-flash";
+        // Global variable for selected output format, initialized to 'html' as default
+        let selectedOutputFormat = "html"; // Set default to HTML
+
+        // All element references should be declared here, but assigned inside DOMContentLoaded
+        let promptInput, sendQueryButton, responseArea, loadingMessage, saveResponseButton, copyResponseButton,
+            scrollToTopButton, appendLastResponseButton, documentResponseButton,
+            openOptionsButton, closeOptionsButton, optionsPanel,
+            openDebugButton, closeDebugButton, debugPanel,
+            openDocBuilderButton, closeDocBuilderButton, docBuilderPanel, docBuilderTextarea,
+            documentingModeCheckbox, exportDocHtmlButton,
+            loadingOverlay, loadingMessageText, mainContent,
+            apiKeyInput, saveApiKeyButton, apiKeyStatus,
+            allTabButtons, allTabContents,
+            prependFileCheckbox, prependFileInput, prependMessageCheckbox, prependMessageInput,
+            geminiModelSelect, outputFormatRadios, enableFormattingCheckbox,
+            consoleOutput, clearConsoleButton,
+            saveConfigButton, loadConfigInput;
+
+
+        // Doc Builder State
+        let documentContent = '<h1>Untitled Document</h1>'; // Default initial content
+        let documentingModeEnabled = false;
+        let sectionCounter = 0;
+
+
+        const loadingMessages = [
+            "Initiating, test subject identified...",
+            "Probing test subject... be patient...",
+            "Initiating rectal scan...",
+            "Checking reproductive organs, one moment please...",
+            "Analyzing neural pathways...",
+            "Calibrating sensory input...",
+            "Preparing for data ingestion...",
+            "Verifying subject compliance...",
+            "Engaging cognitive assessment protocols...",
+            "Stand by for interface synchronization..."
+        ];
+
+        let messageInterval;
+        let messageCount = 0;
+        const messageDisplayDuration = 1500; // 1.5 seconds per message
+
+        // Custom logging function
+        function logToConsole(message) {
+            if (consoleOutput) { // Check if consoleOutput element exists before using
+                const timestamp = new Date().toLocaleTimeString();
+                consoleOutput.value += `[${timestamp}] ${message}\n`;
+                consoleOutput.scrollTop = consoleOutput.scrollHeight; // Auto-scroll to bottom
+            }
+            console.log(message); // Always log to browser console
+        }
+
+        function displayRandomMessage() {
+            if (messageCount < loadingMessages.length) { // Cycle through all messages
+                const randomIndex = Math.floor(Math.random() * loadingMessages.length);
+                if (loadingMessageText) { // Check if element exists
+                    loadingMessageText.textContent = loadingMessages[randomIndex];
+                }
+                messageCount++;
+            } else {
+                // If all messages displayed, transition to main content
+                clearInterval(messageInterval);
+                if (loadingOverlay) { // Check if element exists
+                    loadingOverlay.style.opacity = '0';
+                    setTimeout(() => {
+                        loadingOverlay.classList.add('hidden');
+                        if (mainContent) { // Check if element exists
+                            mainContent.classList.remove('hidden');
+                        }
+                        // Ensure body overflow is reset if it was hidden for the loading overlay
+                        document.body.style.overflow = 'auto';
+                        checkApiKeyStatus(); // Check API key status after loading
+                    }, 500); // Wait for fade out transition
+                }
+            }
+        }
+
+        function checkApiKeyStatus() {
+            // Ensure all necessary elements are available before proceeding
+            if (!apiKeyStatus || !sendQueryButton || !apiKeyInput) {
+                logToConsole("API Key status elements not found. Cannot check API key status.");
+                return;
+            }
+
+            if (API_KEY && API_KEY.length > 0) { // Check if key is valid/not placeholder
+                apiKeyStatus.textContent = "API Key Loaded.";
+                apiKeyStatus.style.color = '#00FF00'; // Green for success
+                apiKeyInput.value = '*****'; // Hide the actual key
+                apiKeyInput.type = 'password'; // Change input type to password
+                sendQueryButton.disabled = false; // Enable query button
+                logToConsole("API Key is loaded.");
+            } else {
+                apiKeyStatus.textContent = "API Key Missing. Please enter it above.";
+                apiKeyStatus.style.color = '#FF00FF'; // Neon Pink for warning
+                apiKeyInput.value = ''; // Clear input if no key
+                apiKeyInput.type = 'text'; // Ensure it's text type for entry
+                sendQueryButton.disabled = true; // Disable query button
+                logToConsole("API Key is missing. Query button disabled.");
+            }
+        }
+
+        // Function to switch tabs within a specific group
+        function switchTab(tabGroup, selectedTabId) {
+            // Ensure allTabContents and allTabButtons are defined before iterating
+            if (allTabContents) {
+                allTabContents.forEach(content => {
+                    if (content.dataset.tabGroup === tabGroup) {
+                        content.classList.remove('active');
+                    }
+                });
+            }
+            if (allTabButtons) {
+                allTabButtons.forEach(button => {
+                    if (button.dataset.tabGroup === tabGroup) {
+                        button.classList.remove('active');
+                    }
+                });
+            }
+
+            const targetTabContent = document.getElementById(`tab-${tabGroup}-${selectedTabId}`);
+            const targetTabButton = document.querySelector(`.tab-button[data-tab-group="${tabGroup}"][data-tab-id="${selectedTabId}"]`);
+
+            if (targetTabContent) {
+                targetTabContent.classList.add('active');
+            }
+            if (targetTabButton) {
+                targetTabButton.classList.add('active');
+            }
+        }
+
+        // Helper function to read file as text
+        function readFileAsText(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => resolve(e.target.result);
+                reader.onerror = (e) => reject(e);
+                reader.readAsText(file);
+            });
+        }
+
+        // Function to clean up response text (removes conversational text and standalone "...")
+        function cleanResponseText(text) {
+            // Remove common conversational intros/outros
+            let cleanedText = text.replace(/^(?:Okay, here's the|Here's a|I can provide you with the following|Sure, here is the|Here is your|Here's the code|Here's the script|Here's the JSON|Here's the CSS|Here's the JavaScript|Here's the Python|Here's the Bash|Here's the HTML|I've generated the|I've created the|Below is the|Please find the|Let me know if you need anything else|I hope this helps|If you have any other questions|Feel free to ask if you need further assistance|Let me know if you'd like any modifications|This should work as expected|This is the requested code|This is the the requested script|This is the requested JSON|This is the requested CSS|This is the requested JavaScript|This is the requested Python|This is the requested Bash|This is the requested HTML)[\s\S]*?\n\n?/i, '')
+                               .replace(/\n\n?(?:Let me know if you need anything else|I hope this helps|If you have any other questions|Feel free to ask if you need further assistance|Let me know if you'd like any modifications|This should work as expected|This is the requested code|This is the requested script|This is the requested JSON|This is the requested CSS|This is the requested JavaScript|This is the requested Python|This is the requested Bash|This is the requested HTML)\s*$/i, '')
+                               .trim();
+
+            // Remove leading/trailing "..." that are not part of a code block
+            cleanedText = cleanedText.replace(/^\s*\.\.\.\s*/, '').replace(/\s*\.\.\.\s*$/, '').trim();
+
+            return cleanedText;
+        }
+
+        // Function to append content to the Doc Builder
+        function appendToDocument(content) {
+            if (!content.trim()) {
+                logToConsole("Doc Builder: No content to append.");
+                return;
+            }
+
+            sectionCounter++;
+            // Escape HTML entities in the content to ensure it's displayed as text within <pre>
+            const escapedContent = content.replace(/&/g, '&amp;')
+                                          .replace(/</g, '&lt;')
+                                          .replace(/>/g, '&gt;')
+                                          .replace(/"/g, '&quot;')
+                                          .replace(/'/g, '&#039;');
+
+            const newSection = `<h2>Section ${sectionCounter}</h2>\n<pre>${escapedContent}</pre>\n\n`;
+
+            // If the document is still at its default "Untitled Document", replace it.
+            // Otherwise, append.
+            if (documentContent === '<h1>Untitled Document</h1>') {
+                documentContent = `<h1>Untitled Document</h1>\n\n${newSection}`; // Ensure H1 is kept
+            } else {
+                documentContent += newSection;
+            }
+            if (docBuilderTextarea) {
+                docBuilderTextarea.value = documentContent;
+                docBuilderTextarea.scrollTop = docBuilderTextarea.scrollHeight; // Scroll to bottom
+            }
+            logToConsole(`Doc Builder: Appended Section ${sectionCounter}.`);
+        }
+
+        // New: Centralized functions to open/close panels
+        function openPanel(panelElement, tabGroup, defaultTabId) {
+            if (panelElement) {
+                panelElement.classList.add('active');
+                switchTab(tabGroup, defaultTabId);
+                logToConsole(`${panelElement.id} opened.`);
+            } else {
+                logToConsole(`Error: Panel element not found for opening: ${panelElement}`);
+            }
+        }
+
+        function closePanel(panelElement) {
+            if (panelElement) {
+                panelElement.classList.remove('active');
+                logToConsole(`${panelElement.id} closed.`);
+            } else {
+                logToConsole(`Error: Panel element not found for closing: ${panelElement}`);
+            }
+        }
+
+
+        // All event listeners and logic that relies on DOM elements should be inside this
+        document.addEventListener('DOMContentLoaded', () => {
+            // Assign elements after DOM is loaded
+            promptInput = document.getElementById('prompt-input');
+            sendQueryButton = document.getElementById('send-query-button');
+            responseArea = document.getElementById('response-area');
+            loadingMessage = document.getElementById('loading-message');
+            saveResponseButton = document.getElementById('save-response-button');
+            copyResponseButton = document.getElementById('copy-response-button');
+            scrollToTopButton = document.getElementById('scroll-to-top-button');
+            appendLastResponseButton = document.getElementById('append-last-response-button');
+            documentResponseButton = document.getElementById('document-response-button');
+
+            openOptionsButton = document.getElementById('open-options-button');
+            closeOptionsButton = document.getElementById('close-options-button');
+            optionsPanel = document.getElementById('options-panel');
+
+            openDebugButton = document.getElementById('open-debug-button');
+            closeDebugButton = document.getElementById('close-debug-button');
+            debugPanel = document.getElementById('debug-panel');
+
+            openDocBuilderButton = document.getElementById('open-doc-builder-button');
+            closeDocBuilderButton = document.getElementById('close-doc-builder-button');
+            docBuilderPanel = document.getElementById('doc-builder-panel');
+            docBuilderTextarea = document.getElementById('doc-builder-textarea');
+            documentingModeCheckbox = document.getElementById('documenting-mode-checkbox');
+            exportDocHtmlButton = document.getElementById('export-doc-html-button');
+
+            loadingOverlay = document.getElementById('loading-overlay');
+            loadingMessageText = document.getElementById('loading-message-text');
+            mainContent = document.getElementById('main-content');
+
+            apiKeyInput = document.getElementById('api-key-input');
+            saveApiKeyButton = document.getElementById('save-api-key-button');
+            apiKeyStatus = document.getElementById('api-key-status');
+
+            allTabButtons = document.querySelectorAll('.tab-button');
+            allTabContents = document.querySelectorAll('.tab-content');
+
+            prependFileCheckbox = document.getElementById('prepend-file-checkbox');
+            prependFileInput = document.getElementById('prepend-file-input');
+            prependMessageCheckbox = document.getElementById('prepend-message-checkbox');
+            prependMessageInput = document.getElementById('prepend-message-input');
+
+            geminiModelSelect = document.getElementById('gemini-model-select');
+
+            outputFormatRadios = document.querySelectorAll('input[name="output-format-radio"]');
+            enableFormattingCheckbox = document.getElementById('enable-formatting-checkbox');
+
+            consoleOutput = document.getElementById('console-output');
+            clearConsoleButton = document.getElementById('clear-console-button');
+
+            saveConfigButton = document.getElementById('save-config-button');
+            loadConfigInput = document.getElementById('load-config-input');
+
+            // Start displaying messages
+            displayRandomMessage();
+            messageInterval = setInterval(displayRandomMessage, messageDisplayDuration);
+
+            // Ensure the initial state of radio buttons matches the default
+            if (document.getElementById('format-html')) {
+                document.getElementById('format-html').checked = true;
+            }
+
+            // Initialize formatting checkbox and radio buttons based on its default checked state
+            const initialIsEnabled = enableFormattingCheckbox ? enableFormattingCheckbox.checked : true; // Default to true if checkbox not found
+            if (outputFormatRadios) {
+                outputFormatRadios.forEach(radio => {
+                    radio.disabled = !initialIsEnabled; // If enabled is true, radios are NOT disabled
+                });
+            }
+
+            if (initialIsEnabled) {
+                const checkedRadio = document.querySelector('input[name="output-format-radio"]:checked');
+                if (checkedRadio) {
+                    selectedOutputFormat = checkedRadio.value;
+                } else {
+                    selectedOutputFormat = 'html'; // Default if none were checked
+                    if (document.getElementById('format-html')) {
+                        document.getElementById('format-html').checked = true;
+                    }
+                }
+            } else {
+                selectedOutputFormat = ''; // No specific format if disabled
+            }
+            logToConsole(`Initial formatting state: Enabled=${initialIsEnabled}, Format=${selectedOutputFormat}`);
+
+            // Initialize Doc Builder state
+            if (docBuilderTextarea) {
+                docBuilderTextarea.value = documentContent;
+            }
+            if (documentingModeCheckbox) {
+                documentingModeCheckbox.checked = documentingModeEnabled;
+            }
+
+
+            // Event Listeners for Options Panel
+            if (openOptionsButton) {
+                openOptionsButton.addEventListener('click', () => {
+                    openPanel(optionsPanel, 'options', 'settings');
+                    // Additional logic specific to options panel opening
+                    if (API_KEY && API_KEY.length > 0) { // Removed hardcoded check for "YOUR_API_KEY_HERE"
+                        if (apiKeyInput) {
+                            apiKeyInput.value = '*****';
+                            apiKeyInput.type = 'password';
+                        }
+                    } else {
+                        if (apiKeyInput) {
+                            apiKeyInput.value = '';
+                            apiKeyInput.type = 'text';
+                        }
+                    }
+                    checkApiKeyStatus();
+                });
+            }
+
+            if (closeOptionsButton) {
+                closeOptionsButton.addEventListener('click', () => closePanel(optionsPanel));
+            }
+
+            // Event Listeners for Debug Panel
+            if (openDebugButton) {
+                openDebugButton.addEventListener('click', () => openPanel(debugPanel, 'debug', 'console'));
+            }
+
+            if (closeDebugButton) {
+                closeDebugButton.addEventListener('click', () => closePanel(debugPanel));
+            }
+
+            // Event Listeners for Doc Builder Panel
+            if (openDocBuilderButton) {
+                openDocBuilderButton.addEventListener('click', () => {
+                    openPanel(docBuilderPanel, 'doc-builder', 'document-content'); // Assuming a default tab for doc builder
+                    if (docBuilderTextarea) docBuilderTextarea.value = documentContent;
+                    if (documentingModeCheckbox) documentingModeCheckbox.checked = documentingModeEnabled;
+                });
+            }
+
+            if (closeDocBuilderButton) {
+                closeDocBuilderButton.addEventListener('click', () => closePanel(docBuilderPanel));
+            }
+
+            // Event Listener for Documenting Mode checkbox
+            if (documentingModeCheckbox) {
+                documentingModeCheckbox.addEventListener('change', (event) => {
+                    documentingModeEnabled = event.target.checked;
+                    logToConsole(`Documenting Mode ${documentingModeEnabled ? 'enabled' : 'disabled'}.`);
+                });
+            }
+
+            // Event Listener for Save API Key button
+            if (saveApiKeyButton) {
+                saveApiKeyButton.addEventListener('click', () => {
+                    const newKey = apiKeyInput ? apiKeyInput.value.trim() : '';
+                    if (newKey && newKey !== '*****') { // Only update if a new key is actually entered
+                        API_KEY = newKey; // Update the global API_KEY
+                        if (apiKeyStatus) {
+                            apiKeyStatus.textContent = "API Key Saved!";
+                            apiKeyStatus.style.color = '#00FF00'; // Green for success
+                        }
+                        if (sendQueryButton) sendQueryButton.disabled = false; // Enable query button
+                        if (apiKeyInput) {
+                            apiKeyInput.value = '*****'; // Hide the actual key after saving
+                            apiKeyInput.type = 'password';
+                        }
+                        logToConsole("API Key saved and loaded.");
+                    } else if (newKey === '*****') {
+                        if (apiKeyStatus) {
+                            apiKeyStatus.textContent = "API Key is already loaded.";
+                            apiKeyStatus.style.color = '#00FF00';
+                        }
+                        logToConsole("API Key already loaded.");
+                    }
+                    else {
+                        API_KEY = ""; // Clear API_KEY if input is empty
+                        if (apiKeyStatus) {
+                            apiKeyStatus.textContent = "Please enter a valid API Key.";
+                            apiKeyStatus.style.color = '#FF00FF'; // Neon Pink for warning
+                        }
+                        if (sendQueryButton) sendQueryButton.disabled = true; // Disable query button
+                        if (apiKeyInput) apiKeyInput.type = 'text'; // Allow re-entry
+                        logToConsole("Invalid API Key entered or cleared.");
+                    }
+                });
+            }
+
+            // Event listener for Gemini Model selection
+            if (geminiModelSelect) {
+                geminiModelSelect.addEventListener('change', (event) => {
+                    currentGeminiModel = event.target.value;
+                    logToConsole(`Selected Gemini Model: ${currentGeminiModel}`);
+                });
+            }
+
+            // Event listener for Output Format radio buttons
+            if (outputFormatRadios) {
+                outputFormatRadios.forEach(radio => {
+                    radio.addEventListener('change', (event) => {
+                        selectedOutputFormat = event.target.value;
+                        logToConsole(`Selected Output Format: ${selectedOutputFormat}`);
+                    });
+                });
+            }
+
+            // Event listener for Enable Formatting checkbox (renamed)
+            if (enableFormattingCheckbox) {
+                enableFormattingCheckbox.addEventListener('change', (event) => {
+                    const isEnabled = event.target.checked;
+                    if (outputFormatRadios) {
+                        outputFormatRadios.forEach(radio => {
+                            radio.disabled = !isEnabled; // If enabled is true, radios are NOT disabled
+                        });
+                    }
+                    if (isEnabled) {
+                        // If formatting is enabled, ensure a format is selected (default to html if none)
+                        const checkedRadio = document.querySelector('input[name="output-format-radio"]:checked');
+                        if (checkedRadio) {
+                            selectedOutputFormat = checkedRadio.value;
+                        } else {
+                            selectedOutputFormat = 'html'; // Default if none were checked
+                            if (document.getElementById('format-html')) {
+                                document.getElementById('format-html').checked = true; // Visually check it
+                            }
+                        }
+                        logToConsole(`Output formatting enabled. Current format: ${selectedOutputFormat}`);
+                    } else {
+                        selectedOutputFormat = ''; // No specific format if disabled
+                        logToConsole("Output formatting disabled.");
+                    }
+                });
+            }
+
+            // Event listener for Clear Console button
+            if (clearConsoleButton) {
+                clearConsoleButton.addEventListener('click', () => {
+                    if (consoleOutput) consoleOutput.value = '';
+                    logToConsole("Console cleared.");
+                });
+            }
+
+            // Event Listeners for ALL Tab Buttons
+            if (allTabButtons) {
+                allTabButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const tabGroup = button.dataset.tabGroup;
+                        const tabId = button.dataset.tabId;
+                        switchTab(tabGroup, tabId);
+                        logToConsole(`Switched to tab: ${tabId} in group: ${tabGroup}`);
+                    });
+                });
+            }
+
+            // New: Scroll to Top Button Functionality
+            if (scrollToTopButton) {
+                scrollToTopButton.addEventListener('click', () => {
+                    if (promptInput) promptInput.scrollTop = 0;
+                    logToConsole("Prompt input scrolled to top.");
+                });
+            }
+
+            // New: Append Last Response Button Functionality
+            if (appendLastResponseButton) {
+                appendLastResponseButton.addEventListener('click', () => {
+                    const lastResponse = responseArea ? responseArea.textContent.trim() : '';
+                    if (lastResponse) {
+                        // Add a newline for separation if there's existing content
+                        if (promptInput && promptInput.value.trim() !== '') {
+                            promptInput.value += '\n\n';
+                        }
+                        if (promptInput) {
+                            promptInput.value += lastResponse;
+                            promptInput.scrollTop = promptInput.scrollHeight; // Scroll to bottom of input
+                        }
+                        logToConsole("Last response appended to prompt input.");
+                    } else {
+                        logToConsole("No last response to append.");
+                    }
+                });
+            }
+
+            // New: Document Response Button Functionality
+            if (documentResponseButton) {
+                documentResponseButton.addEventListener('click', () => {
+                    const lastResponse = responseArea ? responseArea.textContent.trim() : '';
+                    if (lastResponse) {
+                        appendToDocument(lastResponse);
+                    } else {
+                        logToConsole("Doc Builder: No response to document.");
+                    }
+                });
+            }
+
+            // New: Export Doc Builder Content to HTML
+            if (exportDocHtmlButton) {
+                exportDocHtmlButton.addEventListener('click', () => {
+                    const docContent = docBuilderTextarea ? docBuilderTextarea.value : '';
+                    const githubLink = "https://github.com/BELTON2024/gemini_interfacer"; // Corrected link
+                    const currentYear = new Date().getFullYear();
+
+                    const htmlContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Export - Gemini Interfacer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Electrolize&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Electrolize', sans-serif;
+            background-color: #000000; /* Black background */
+            color: #00FF00; /* Green text */
+            line-height: 1.6;
+            padding: 20px;
+            margin: 0;
+        }
+        h1, h2 {
+            font-family: 'Orbitron', monospace;
+            color: #FF00FF; /* Neon Pink */
+            text-shadow: 0 0 5px rgba(255, 0, 255, 0.5);
+            margin-top: 1.5em;
+            margin-bottom: 0.8em;
+        }
+        h1 {
+            font-size: 2.5em;
+            text-align: center;
+            border-bottom: 2px solid #00FF00;
+            padding-bottom: 10px;
+            margin-bottom: 1em;
+        }
+        h2 {
+            font-size: 1.8em;
+            border-bottom: 1px dashed rgba(0, 255, 0, 0.5);
+            padding-bottom: 5px;
+        }
+        pre {
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 1px dashed rgba(0, 255, 0, 0.3);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: #00FF00;
+            font-family: 'monospace', 'Courier New', Courier, monospace;
+            font-size: 0.95em;
+            margin-bottom: 1.5em;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 0, 255, 0.3);
+            font-size: 0.85em;
+            color: #00FF00;
+        }
+        footer a {
+            color: #FF00FF;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        footer a:hover {
+            color: #FFFFFF;
+        }
+    </style>
+</head>
+<body>
+    ${docContent}
+    <footer>
+        copyright elton boehnen ${currentYear} (boehnenelton2025@gmail.com) | <a href="${githubLink}" target="_blank">Github</a>
+    </footer>
+</body>
+</html>
+`;
+                    const blob = new Blob([htmlContent], { type: 'text/html' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `Gemini_Document_${new Date().toISOString().slice(0,10)}.html`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    logToConsole("Doc Builder: Exported document to HTML.");
+                });
+            }
+
+
+            // Initial state of append and document buttons
+            if (responseArea && appendLastResponseButton && documentResponseButton) {
+                if (responseArea.textContent.trim() === '') {
+                    appendLastResponseButton.disabled = true;
+                    documentResponseButton.disabled = true;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
